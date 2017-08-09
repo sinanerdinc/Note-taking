@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>NoteMaster</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue" charset="utf-8"></script>
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower:400,700&amp;subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="app">
+      <div class="well well-sm">
+        <h1>{{title}}</h1>
+      </div>
+      <div class="container">
+
+        <div class="row">
+          <div class="col-sm-12">
+            <form>
+              <div class="form-group">
+                <input type="text" v-model="note.title" class="form-control" aria-describedby="titleHelp" placeholder="Note title">
+                <small id="titleHelp" class="form-text text-muted">For example: Shopping</small>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" v-model="note.text" placeholder="Note text" rows="5"></textarea>
+              </div>
+            </form>
+            <button class="btn btn-primary" v-on:click="addNote">Submit</button>
+
+          </div>
+        </div>
+        <div class="row" v-if="notes.length > 0">
+          <div class="container bootstrap snippet">
+    <div class="row">
+    	<ul class="notes">
+            <li v-for="(note,index) in notes">
+                <div v-bind:class="note.class">
+                    <small>{{note.date}}</small>
+                    <h4>{{note.title}}</h4>
+                    <p>{{note.text}}</p>
+                    <a @click="removeNote(index)" href="#" class="text-danger pull-right"><i class="fa fa-trash-o "></i></a>
+                </div>
+            </li>
+
+		</ul>
+	</div>
+</div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var app = new Vue({
+        el: "#app",
+        data: {
+          title: 'NoteMaster v0.1',
+          note: {
+            title: '',
+            text: '',
+          },
+          notes: [],
+          colors: ["rotate-1 yellow-bg","rotate-2 red-bg","rotate-1 lazur-bg","rotate-2 navy-bg"]
+        },
+        methods: {
+          addNote: function () {
+            this.notes.push({
+              text: this.note.text,
+              title:this.note.title,
+              class:this.getRandomColor(),
+              date: new Date(Date.now()).toLocaleString()
+            })
+          },
+          removeNote: function (index) {
+            this.notes.splice(index, 1);
+          },
+          getRandomColor: function () {
+            var clr = this.colors[Math.floor(Math.random() * this.colors.length)];
+            console.log(clr);
+            return clr;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
